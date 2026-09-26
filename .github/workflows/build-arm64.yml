@@ -21,7 +21,8 @@ jobs:
           AUTH="${{ secrets.OPUGOSPRO_MIRROR_AUTH }}"
           M="https://ugospro.135246.xyz/build-inputs"
           curl --fail -u "$AUTH" "$M/payload.tar.gz" | tar xz
-          mkdir core-preinstall && curl --fail -u "$AUTH" "$M/core-preinstall.tar.gz" | tar xz -C core-preinstall
+          mkdir -p core-preinstall
+          curl --fail -u "$AUTH" -o core-preinstall/core-preinstall.tar.gz "$M/core-preinstall.tar.gz"
           curl --fail -u "$AUTH" "$M/board-radxa-cubie-a5e.tar.gz" | tar xz
 
       - name: Build image
