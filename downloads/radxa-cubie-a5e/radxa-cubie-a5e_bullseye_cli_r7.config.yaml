@@ -1,0 +1,88 @@
+---
+metadata: {architecture: arm64, build_date: '2026-04-30T16:34:00+00:00', distro_mirror: '',
+  edition: cli, firmware_override: '', install_vscodium: false, linux_override: '',
+  mode: root, output_dir: /workspaces/radxa-cubie-a5e/out/radxa-cubie-a5e_bullseye_cli,
+  product: radxa-cubie-a5e, radxa_mirror: '', radxa_repo_suffix: '', rootfs: rootfs.tar,
+  rsdk_rev: '', sdboot: false, suite: bullseye, temp_dir: /tmp/rsdk.radxa-cubie-a5e_bullseye_cli.AGukM9HA,
+  use_pkgs_json: true, variant: apt, vendor_packages: true}
+mmdebstrap: {architectures: [arm64], cleanup-hooks: [rm -rf "$1/etc/resolv.conf",
+    rm -rf "$1/var/lib/apt/lists"/*, rm -rf "$1/etc/machine-id" "$1/var/lib/dbus/machine-id",
+    rm -rf "$1/var/log/journal"/*], components: [main, contrib, non-free], customize-hooks: [
+    "set -e\nexport SYSTEMD_RELAX_ESP_CHECKS=1\n\nAPT_CONFIG=\"$MMDEBSTRAP_APT_CONFIG\"\
+        \ apt-get update -oDPkg::Chroot-Directory=\"$1\"\nAPT_CONFIG=\"$MMDEBSTRAP_APT_CONFIG\"\
+        \ DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get full-upgrade\
+        \ -oDPkg::Chroot-Directory=\"$1\" -y --allow-downgrades\nAPT_CONFIG=\"$MMDEBSTRAP_APT_CONFIG\"\
+        \ DEBIAN_FRONTEND=noninteractive NEEDRESTART_SUSPEND=1 apt-get autoremove\
+        \ -oDPkg::Chroot-Directory=\"$1\" -y --purge\nsed -i \"s|^deb|deb [signed-by=\\\
+        \"/usr/share/keyrings/radxa-archive-keyring.gpg\\\"]|g\" \"$1\"/etc/apt/sources.list.d/*-radxa*.list\n\
+        rm \"$1/etc/apt/sources.list.d/99-local-apt-repository.list\"\nrm \"$1/srv/local-apt-repository/Packages\"\
+        \nrm \"$1/srv/local-apt-repository/Release\"\nrm \"$1\"/fixup-*\n", chroot
+        "$1" update-alternatives --set regulatory.db /lib/firmware/regulatory.db-upstream,
+    "echo \"127.0.1.1\tradxa-cubie-a5e\" >> \"$1/etc/hosts\"", cp "/workspaces/radxa-cubie-a5e/out/radxa-cubie-a5e_bullseye_cli/config.yaml"
+        "$1/etc/rsdk/", echo "FINGERPRINT_VERSION='2'" > "$1/etc/radxa_image_fingerprint",
+    echo "RSDK_BUILD_DATE='$(date -R)'" >> "$1/etc/radxa_image_fingerprint", echo
+        "RSDK_REVISION=''" >> "$1/etc/radxa_image_fingerprint", echo "RSDK_CONFIG='/etc/rsdk/config.yaml'"
+        >> "$1/etc/radxa_image_fingerprint", chroot "$1" sh -c "SYSTEMD_RELAX_ESP_CHECKS=1
+        update-initramfs -c -k all", chroot "$1" sh -c "u-boot-update", "cp -aR \"\
+        $1/boot/efi\" \"$1/boot/efi2\"\nchmod 0755 \"$1/boot/efi2\"\numount \"$1/boot/efi\"\
+        \nrmdir \"$1/boot/efi\"\nmv \"$1/boot/efi2\" \"$1/boot/efi\"\n", "mkdir -p\
+        \ \"/workspaces/radxa-cubie-a5e/out/radxa-cubie-a5e_bullseye_cli/seed\"\n\
+        cp \"$1/etc/radxa_image_fingerprint\" \"/workspaces/radxa-cubie-a5e/out/radxa-cubie-a5e_bullseye_cli/seed\"\
+        \ncp \"$1/etc/rsdk/\"* \"/workspaces/radxa-cubie-a5e/out/radxa-cubie-a5e_bullseye_cli/seed\"\
+        \ntar Jvcf \"/workspaces/radxa-cubie-a5e/out/radxa-cubie-a5e_bullseye_cli/seed.tar.xz\"\
+        \ -C \"/workspaces/radxa-cubie-a5e/out/radxa-cubie-a5e_bullseye_cli/seed\"\
+        \ .\nrm -rf \"/workspaces/radxa-cubie-a5e/out/radxa-cubie-a5e_bullseye_cli/seed\"\
+        \n"], essential-hooks: ["APT_CONFIG=\"$MMDEBSTRAP_APT_CONFIG\" \\\napt-get\
+        \ install -oDPkg::Chroot-Directory=\"$1\" -y \\\nsoftware-properties-common\n",
+    "APT_CONFIG=\"$MMDEBSTRAP_APT_CONFIG\" \\\napt-get update -oDPkg::Chroot-Directory=\"\
+        $1\"\n", "set -e\n\nAPT_CONFIG=\"$MMDEBSTRAP_APT_CONFIG\" \\\napt-get install\
+        \ -oDPkg::Chroot-Directory=\"$1\" -y \\\ngcc rsetup radxa-bootutils python-is-python3\
+        \ initramfs-tools zstd\n\nmkdir -p \"$1/boot/efi\"\nmount -t tmpfs rsdk \"\
+        $1/boot/efi\"\n", echo 'Skip systemd-boot installation.', "set -e\nexport\
+        \ SYSTEMD_RELAX_ESP_CHECKS=1\n\nAPT_CONFIG=\"$MMDEBSTRAP_APT_CONFIG\" \\\n\
+        apt-get install -oDPkg::Chroot-Directory=\"$1\" -y \\\nu-boot-radxa-cubie-a5e\
+        \ linux-headers-radxa-cubie-a5e\n\nAPT_CONFIG=\"$MMDEBSTRAP_APT_CONFIG\" \\\
+        \napt-get install -oDPkg::Chroot-Directory=\"$1\" -y \\\nlinux-image-radxa-cubie-a5e\n\
+        \nAPT_CONFIG=\"$MMDEBSTRAP_APT_CONFIG\" \\\napt-get install -oDPkg::Chroot-Directory=\"\
+        $1\" -y \\\n-oDpkg::Options::=--force-confnew --install-recommends \\\ntask-radxa-cubie-a5e\n\
+        \nAPT_CONFIG=\"$MMDEBSTRAP_APT_CONFIG\" \\\napt-get full-upgrade -oDPkg::Chroot-Directory=\"\
+        $1\" -y \\\n-oDpkg::Options::=--force-confnew --allow-downgrades\n"], hostname: radxa-cubie-a5e,
+  keyrings: [/tmp/rsdk.radxa-cubie-a5e_bullseye_cli.AGukM9HA/keyrings/], mirrors: [
+    https://deb.debian.org/debian], mode: root, packages: [radxa-archive-keyring,
+    local-apt-repository, init, sudo, login, firmware-brcm80211, firmware-realtek,
+    cloud-initramfs-growroot, ssh, systemd-timesyncd, bluetooth, iw, libnm0/bullseye-backports,
+    network-manager/bullseye-backports, wpasupplicant/bullseye-backports, radxa-firmware,
+    radxa-udev, rsetup-config-first-boot, firmware-iwlwifi, firmware-linux, apt-listchanges,
+    apt-transport-https, apt-utils, bash-completion, bc, binutils, curl, dmidecode,
+    dosfstools, eject, exfat-fuse, file, gpg, haveged, htop, irqbalance, lbzip2, less,
+    locales, lm-sensors, man-db, nano, needrestart, ntfs-3g, python3-pip, tmux, vim,
+    wget, xz-utils, avahi-daemon, ca-certificates, dnsmasq-base, ldnsutils, iproute2,
+    iptables, iputils-ping, samba, wireless-regdb, alsa-ucm-conf, alsa-utils, pulseaudio,
+    pulseaudio-module-bluetooth, gpiod, hdparm, i2c-tools, mtd-utils, pciutils, rfkill,
+    spi-tools, usbutils, libreelec-alsa-utils, radxa-otgutils, libmraa2, libmraa-dev,
+    foot-terminfo, kitty-terminfo], setup-hooks: ["# updates archive\nhead -n 1 \"\
+        $1/etc/apt/sources.list\" | sed -E -e \"s/(bullseye)/\\\\1-updates/\" > \"\
+        $1/etc/apt/sources.list.d/50-bullseye-updates.list\"\n# backports archive\n\
+        head -n 1 \"$1/etc/apt/sources.list\" | sed -E -e \"s/(bullseye)/\\\\1-backports/\"\
+        \ > \"$1/etc/apt/sources.list.d/50-bullseye-backports.list\"\n# security archive\n\
+        head -n 1 \"$1/etc/apt/sources.list\" | sed -E -e \"s/(bullseye)/\\\\1-security/\"\
+        \ -e \"s|/debian|/debian-security|\" > \"$1/etc/apt/sources.list.d/50-bullseye-security.list\"\
+        \n# main archive\nmv \"$1/etc/apt/sources.list\" \"$1/etc/apt/sources.list.d/50-bullseye.list\"\
+        \n", "sed -i \"s|https*://.*/|http://archive.debian.org/|\" \"$1/etc/apt/sources.list.d/50-bullseye-backports.list\"\
+        \n", mkdir -p "$1/etc/rsdk/", "set -e\nmkdir -p \"$1/srv/\"\ncp -R \"/tmp/rsdk.radxa-cubie-a5e_bullseye_cli.AGukM9HA/debs/.\"\
+        \ \"$1/srv/local-apt-repository\"\ncp -R \"/tmp/rsdk.radxa-cubie-a5e_bullseye_cli.AGukM9HA/build/.\"\
+        \ \"$1/\"\ncd \"$1/srv/local-apt-repository\"\napt-ftparchive packages . >\
+        \ ./Packages\napt-ftparchive -o \"APT::FTPArchive::Release::Origin=local-apt-repository\"\
+        \ release . > ./Release\ncd -\necho \"deb [trusted=yes] file://$1/srv/local-apt-repository\
+        \ ./\" > \"$1/etc/apt/sources.list.d/99-local-apt-repository.list\"\ncat <<\
+        \ EOF > \"$1/etc/apt/preferences.d/local-apt-repository\"\nPackage: *\nPin:\
+        \ release o=local-apt-repository\nPin-Priority: 1999\nEOF\n", "echo deb https://radxa-repo.github.io/a527-bullseye\
+        \ a527-bullseye main > \"$1/etc/apt/sources.list.d/80-radxa-a527.list\"\n",
+    "echo deb https://radxa-repo.github.io/bullseye bullseye main > \"$1/etc/apt/sources.list.d/70-radxa.list\"\
+        \n", "wget -O \"$1/etc/rsdk/80-radxa-a527.pkgs.json\" https://radxa-repo.github.io/a527-bullseye/pkgs.json\n",
+    "wget -O \"$1/etc/rsdk/70-radxa.pkgs.json\" https://radxa-repo.github.io/bullseye/pkgs.json\n",
+    curl -L -o "$1/etc/radxa_apt_snapshot" https://radxa-repo.github.io/bullseye/pkgs.json],
+  suite: bullseye, target: rootfs.tar, variant: apt}
+name: /workspaces/radxa-cubie-a5e/out/radxa-cubie-a5e_bullseye_cli
+env:
+  SOURCE_DATE_EPOCH: 1777566840

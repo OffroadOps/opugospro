@@ -1,0 +1,9 @@
+{
+  "id": "com.example.application",
+  "name": "示例应用",
+  "version": "1.0.0",
+  "arch": "amd64",
+  "description": "把已经能够被 UGOS 原生安装器接受的 UPK 放到 packages 目录后修改此文件。",
+  "minFirmware": "1.19.0",
+  "file": "com.example.application_1.0.0_amd64.upk"
+}

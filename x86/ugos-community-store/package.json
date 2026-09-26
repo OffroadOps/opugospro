@@ -1,0 +1,11 @@
+{
+  "name": "ugos-community-store",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "keygen": "node tools/keygen.mjs",
+    "build": "node tools/build-repo.mjs",
+    "verify": "node tools/verify-repo.mjs",
+    "serve": "node tools/serve.mjs"
+  }
+}

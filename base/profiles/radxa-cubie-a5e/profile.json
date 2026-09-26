@@ -1,0 +1,69 @@
+{
+  "schema": 2,
+  "id": "radxa-cubie-a5e",
+  "display_name": "Radxa Cubie A5E",
+  "hostname": "UGOS-A5E",
+  "serial": "UGOSA5EA5270001",
+  "uuid": "d41f9a4c-6f72-4c58-9c05-3f0d3c31a5e2",
+  "mac": "02:A5:E5:00:00:01",
+  "compatibility_model": "DH4300PLUS",
+  "model_series": "dh4300plus",
+  "board_tag": "A5E",
+  "arch": "arm64",
+  "kernel_version": "5.15.147-20-aw2501",
+  "dtb": "dtb/allwinner/sun55i-a527-cubie-a5e.dtb",
+  "console": "ttyAS0,115200",
+  "console_secondary": "console=tty1",
+  "earlycon": "earlycon=sunxi-uart,0x2500000",
+  "bootargs_extra": "clk_ignore_unused coherent_pool=2M irqchip.gicv3_pseudo_nmi=0 cgroup_enable=cpuset cgroup_memory=1 cgroup_enable=memory swapaccount=1 kasan=off",
+  "initramfs_modules": [
+    "loop",
+    "fat",
+    "vfat",
+    "squashfs",
+    "exportfs",
+    "overlay"
+  ],
+  "device_dir": "boards/radxa-cubie-a5e-base",
+  "disk_signature": "0x41354545",
+  "marker": "A5E-UGOS-SD",
+  "debug_http": true,
+  "cpu": {
+    "model": "Allwinner A527",
+    "cores": 8,
+    "threads": 8,
+    "max_mhz": 2016
+  },
+  "memory": {
+    "manufacturer": "",
+    "type": "LPDDR4",
+    "size_mib": 2048,
+    "ugos_speed_field": 0,
+    "note": "board confirmed 2 GiB (dmesg Memory: 1957656K/2097152K on 2026-09-24)"
+  },
+  "bootloader": {
+    "image": "bootloader-region-16m.bin",
+    "offset": 0,
+    "magic_checks": [
+      {
+        "offset": 131076,
+        "bytes": "65474f4e2e425430",
+        "label": "eGON.BT0 boot0 signature at 128 KiB + 4"
+      },
+      {
+        "offset": 12582912,
+        "bytes": "73756e78692d7061636b616765",
+        "label": "sunxi-package u-boot at 12 MiB"
+      }
+    ]
+  },
+  "source": {
+    "upstream_image": "radxa-cubie-a5e_bullseye_cli_r7.output_512.img.xz (rsdk-r7)",
+    "upstream_sha512": "7fe2890166ac5a2ac04dd3cd7a36b28c610e487553c6f93f154f0526a4ab7e9f54beeb6ca85825542d9e44f90fe708dea0470f7693049e1bfd082bb24b089a44",
+    "bootloader_region": "bytes 0..16MiB of the upstream GPT image (GPT header + boot0@128KiB + sunxi-package@12MiB)",
+    "kernel": "boot/vmlinuz-5.15.147-20-aw2501 from upstream rootfs",
+    "dtb": "usr/lib/linux-image-5.15.147-20-aw2501/allwinner/sun55i-a527-cubie-a5e.dtb",
+    "modules": "lib/modules/5.15.147-20-aw2501 from upstream rootfs",
+    "console_note": "BSP extlinux uses console=ttyAS0,115200n8 with earlycon sunxi-uart at 0x2500000; AW_MMC/AW_DWMAC/AW_SERIAL_CONSOLE are built-in"
+  }
+}

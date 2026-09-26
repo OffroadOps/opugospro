@@ -1,0 +1,40 @@
+# build artifacts
+base/out/
+*.img
+*.img.zst
+*.7z
+*.tar.gz
+
+# large/derivable board assets (fetched from official firmware at build time)
+boards/*/rootfs-overlay/
+boards/*/bootfs/Image
+boards/*/*-modules.tar.gz
+
+# proprietary UGREEN payload (fetched at build time from the private mirror)
+payload/
+core-preinstall/*.tar.gz
+core-preinstall/*.tar.gz.json
+
+# archived device lines (local only)
+archive/
+
+# credentials & local state
+vps/vps-config.py
+vps/*.log
+vps/store-public.tar.gz
+*monitor-state*.json
+__pycache__/
+*.pyc
+tools/
+work/
+downloads/npu-probe/
+downloads/oesbox-a311d/
+x86/analysis/
+x86/out/
+boards/oect-rk3566-base/
+boards/rk3399-eaidk610-base/
+boards/jws3399-dtb-candidates/
+vps/carve-p9.ps1
+downloads/radxa-cubie-a5e/*.img.xz
+x86/ugos-community-store/packages/*.upk
+x86/ugos-community-store/packages/*.package.json

@@ -1,0 +1,40 @@
+name: build-arm64
+
+on:
+  workflow_dispatch:
+    inputs:
+      board:
+        description: "Board id (profiles/<id>)"
+        required: true
+        default: radxa-cubie-a5e
+  schedule:
+    - cron: "0 22 * * *" # daily 06:00 CST: rebuild when official payload updates
+
+jobs:
+  build:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch build inputs from private mirror
+        run: |
+          AUTH="${{ secrets.OPUGOSPRO_MIRROR_AUTH }}"
+          M="https://ugospro.135246.xyz/build-inputs"
+          curl --fail -u "$AUTH" "$M/payload.tar.gz" | tar xz
+          mkdir core-preinstall && curl --fail -u "$AUTH" "$M/core-preinstall.tar.gz" | tar xz -C core-preinstall
+          curl --fail -u "$AUTH" "$M/board-radxa-cubie-a5e.tar.gz" | tar xz
+
+      - name: Build image
+        run: |
+          python3 base/scripts/build-ugos-arm-image.py \
+            --profile base/profiles/${{ inputs.board || 'radxa-cubie-a5e' }}/profile.json \
+            --payload-dir payload \
+            --core-preinstall core-preinstall/core-preinstall.tar.gz
+
+      - name: Upload image artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ugos-arm64-${{ inputs.board || 'radxa-cubie-a5e' }}
+          path: base/out/*.img
+          compression-level: 0
+          retention-days: 14

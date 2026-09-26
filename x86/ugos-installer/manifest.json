@@ -1,0 +1,12 @@
+{
+  "name": "UGOS Pro universal VPS installer",
+  "version": "1.19.1.126",
+  "arch": "amd64",
+  "image": "http://5.181.177.120/ugospro-1.19.1.126-amd64-universal-bios-uefi-gpt-dd.img.zst",
+  "image_sha256": "80e4711d1e30a3f6b5e746675e1447b2ab1c001e69bbe92c1f4311b0f6a85872",
+  "confhome": "http://5.181.177.120/ugos-installer",
+  "min_disk_gib": 16,
+  "boot": ["bios", "uefi"],
+  "entry": "ugos-install.sh",
+  "upstream_reinstall_commit": "5db051675101f31bbe2fb3e093432fa4d1af8dcc"
+}

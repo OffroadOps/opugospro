@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>UGOS 社区应用源</title>
+  <style>
+    body{font:15px system-ui;margin:0;background:#f4f7fb;color:#172033}main{max-width:960px;margin:48px auto;padding:0 20px}
+    header,.app{background:#fff;border:1px solid #dfe6ef;border-radius:14px;padding:20px;margin-bottom:14px;box-shadow:0 5px 20px #23314d0c}
+    h1{margin:0 0 8px}.status{color:#667085}.ok{color:#087443}.bad{color:#b42318}.app h2{margin:0 0 6px;font-size:18px}
+    .meta{color:#667085;margin:5px 0 14px}a{display:inline-block;background:#1769ff;color:#fff;text-decoration:none;padding:8px 14px;border-radius:8px}
+    code{background:#eef2f7;padding:2px 5px;border-radius:4px}
+  </style>
+</head>
+<body><main>
+  <header><h1>UGOS 社区应用源</h1><div id="status" class="status">正在验证仓库签名…</div></header>
+  <section id="apps"></section>
+</main><script>
+const canonical=v=>v===null||typeof v!=="object"?JSON.stringify(v):Array.isArray(v)?`[${v.map(canonical).join(",")}]`:`{${Object.keys(v).sort().map(k=>`${JSON.stringify(k)}:${canonical(v[k])}`).join(",")}}`;
+const pemBytes=pem=>Uint8Array.from(atob(pem.replace(/-----[^-]+-----|\s/g,"")),c=>c.charCodeAt(0));
+(async()=>{const status=document.querySelector("#status"),apps=document.querySelector("#apps");try{
+  const [repo,pem]=await Promise.all([fetch("repo.json",{cache:"no-store"}).then(r=>r.json()),fetch("repo-public-key.pem").then(r=>r.text())]);
+  const key=await crypto.subtle.importKey("spki",pemBytes(pem),{name:"Ed25519"},false,["verify"]);
+  const sig=Uint8Array.from(atob(repo.signature.value),c=>c.charCodeAt(0));
+  const ok=await crypto.subtle.verify("Ed25519",key,sig,new TextEncoder().encode(canonical(repo.signed)));
+  if(!ok)throw new Error("仓库签名无效"); status.className="status ok";status.textContent=`签名有效 · ${repo.signed.packages.length} 个应用`;
+  apps.innerHTML=repo.signed.packages.length?repo.signed.packages.map(p=>`<article class="app"><h2>${p.name}</h2><div>${p.description||""}</div><div class="meta">${p.id} · ${p.version} · ${p.arch} · SHA-256 ${p.sha256.slice(0,12)}…</div><a href="${p.url}">下载 UPK</a></article>`).join(""):`<article class="app">仓库签名正常，尚未发布应用。</article>`;
+}catch(e){status.className="status bad";status.textContent=`无法信任此仓库：${e.message}`}})();
+</script></body></html>
