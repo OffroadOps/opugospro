@@ -65,5 +65,14 @@
     "dtb": "usr/lib/linux-image-5.15.147-20-aw2501/allwinner/sun55i-a527-cubie-a5e.dtb",
     "modules": "lib/modules/5.15.147-20-aw2501 from upstream rootfs",
     "console_note": "BSP extlinux uses console=ttyAS0,115200n8 with earlycon sunxi-uart at 0x2500000; AW_MMC/AW_DWMAC/AW_SERIAL_CONSOLE are built-in"
+  },
+  "mock_cloud": {
+    "server_ip": "5.181.177.120",
+    "domains": [
+      "api-zh.ugnas.com",
+      "center.ugnas.com",
+      "dl-cn.ugnas.com"
+    ],
+    "ca_cert": "boards/radxa-cubie-a5e-base/opugos-mock-ca.crt"
   }
 }

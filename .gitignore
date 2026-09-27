@@ -38,3 +38,9 @@ vps/carve-p9.ps1
 downloads/radxa-cubie-a5e/*.img.xz
 x86/ugos-community-store/packages/*.upk
 x86/ugos-community-store/packages/*.package.json
+release/private/
+release/*.sig.json
+base/out/*.sig.json
+private/
+release/*.sig.json
+release/private/

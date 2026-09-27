@@ -327,6 +327,29 @@ def patch_init_script_generic(layout, text: str, profile: dict, module_version: 
     if text.count(unsafe_exec) != 1:
         raise RuntimeError("stage5 exec block not found exactly once")
     text = text.replace(unsafe_exec, safe_exec, 1)
+    # 8b. Mock-cloud bridge (v11): point the board's UGREEN cloud API domains at the
+    #     self-hosted server and trust its CA, so app_serv's catalog/banner/OTA calls
+    #     hit our mock endpoints instead of failing 401.
+    mock = profile.get("mock_cloud") or {}
+    if mock.get("server_ip") and mock.get("ca_cert"):
+        ca_src = Path(mock["ca_cert"])
+        if not ca_src.is_absolute():
+            ca_src = Path(__file__).resolve().parents[2] / ca_src
+        ca_pem = ca_src.read_text(encoding="utf-8").strip()
+        domains = " ".join(mock.get("domains", []))
+        block = (
+            "\t\tmkdir -p /mnt/usr/local/share/ca-certificates\n"
+            "\t\tcat > /mnt/usr/local/share/ca-certificates/opugos-mock-ca.crt <<'UGOS_CA_EOF'\n"
+            f"{ca_pem}\n"
+            "UGOS_CA_EOF\n"
+            "\t\tchroot /mnt /usr/sbin/update-ca-certificates >> /tmp/ugos-debug/status.txt 2>&1 || true\n"
+            "\t\tfor dom in " + domains + '; do grep -q " $dom" /mnt/etc/hosts 2>/dev/null || echo "' + mock["server_ip"] + ' $dom" >> /mnt/etc/hosts; done\n'
+            "\t\tugos_stage 'mock-cloud bridge installed (hosts + CA)'\n"
+        )
+        anchor = "\t\tugos_stage 'stage4: payload + modules extracted into overlay root'\n\t\tugos_dump\n"
+        if anchor not in text:
+            raise RuntimeError("stage4 anchor not found for mock-cloud injection")
+        text = text.replace(anchor, anchor + block, 1)
     return text
 
 

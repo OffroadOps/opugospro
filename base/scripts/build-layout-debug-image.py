@@ -712,7 +712,7 @@ def layout_partitions() -> tuple[list[dict], list[dict], int]:
     lba = 16 * 1024 * 1024 // SECTOR_SIZE
     p1 = {"number": 1, "type": 0x0C, "type_name": "W95 FAT32 LBA boot", "start_lba": lba, "sectors": 512 * 1024 * 1024 // SECTOR_SIZE, "bootable": True}
     lba = align_up(p1["start_lba"] + p1["sectors"], 2048)
-    p2 = {"number": 2, "type": 0x0C, "type_name": "W95 FAT32 LBA UGOS images", "start_lba": lba, "sectors": 1792 * 1024 * 1024 // SECTOR_SIZE}
+    p2 = {"number": 2, "type": 0x0C, "type_name": "W95 FAT32 LBA UGOS images", "start_lba": lba, "sectors": 2304 * 1024 * 1024 // SECTOR_SIZE}
     lba = align_up(p2["start_lba"] + p2["sectors"], 2048)
     p3 = {"number": 3, "type": 0x83, "type_name": "Linux factory", "start_lba": lba, "sectors": 32 * 1024 * 1024 // SECTOR_SIZE}
     ext_start = align_up(p3["start_lba"] + p3["sectors"], 2048)

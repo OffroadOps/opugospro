@@ -1,0 +1,7 @@
+Wrote image: H:\ugos\base\out\ugos-arm64-radxa-cubie-a5e.img
+Wrote manifest: H:\ugos\base\out\ugos-arm64-radxa-cubie-a5e.img.manifest.json
+Wrote sha256: H:\ugos\base\out\ugos-arm64-radxa-cubie-a5e.img.sha256
+Image size: 8511291392 bytes
+SHA256: 7a74269b27a7512695d3182aa60dd9c41b03b4c16a391e92c50b038886ee1115
+Verification: {'mbr_signature_ok': True, 'sectors_1_to_63_zeroed': True, 'boot0_magic_offset_128k': True, 'bootloader_magic_checks': {'eGON.BT0 boot0 signature at 128 KiB + 4': True, 'sunxi-package u-boot at 12 MiB': True}}
+exit=0

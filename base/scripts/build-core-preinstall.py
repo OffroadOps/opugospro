@@ -25,6 +25,7 @@ CORE_UPKS = [
     "13_arm64_com.ugreen.helpmgr.upk",
     "18_arm64_com.ugreen.jobmgr.upk",
     "19_arm64_com.ugreen.ugos_serv.upk",
+    "20_arm64_com.ugreen.network.upk",
 ]
 
 
